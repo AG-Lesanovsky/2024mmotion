@@ -1,4 +1,4 @@
-#script with the set of parameters for the main mm_dynamics
+#script with the set of operators for the main mm_dynamics
 import qutip as qt
 import numpy as np
 from mm_parameters import*
@@ -27,7 +27,7 @@ P1pd = P1p.dag()
 ############### internal motion #################
 Hin = EnS1*(S1m*S1md + S1p*S1pd) + EnP1*(P1m*P1md + P1p*P1pd)
 Hin = Hin + ((1 + ep)/4)*((dx*ell)/(hol**2))*(P1p*S1md + P1m*S1pd + S1p*P1md + S1m*P1pd)
-Hin = Hin + ((1 + ep)/4)*((dx*ell)/(hol**2))*(P1p*S1md - P1m*S1pd + S1p*P1md + S1m*P1pd)
+Hin = Hin + ((1 + ep)/4)*((dy*ell)/(hol**2))*(P1p*S1md - P1m*S1pd + S1p*P1md + S1m*P1pd)
 
 
 ############### external motion #################
