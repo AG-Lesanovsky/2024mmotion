@@ -9,13 +9,16 @@ from mm_parameters import*
 start_time = time.time()
 
 # calculating the Floquet quasi-energies and Floquet modes associated with the system
-dx_vec = np.linspace(0, 1.6, 250)
+dx_vec = np.linspace(0, 1, 40)
 
 hs_dim = Nx * 2
 
 q_energies = np.zeros((len(dx_vec), hs_dim))
 T = 2 * np.pi / v 
 
+# Calculate Floquet modes and energies outside the loop
+floquet_modes = []
+floquet_energies = []
 for idx, dx in enumerate(dx_vec):
     ############### internal motion #################
     Hin = EnS1 * S1 * S1d + EnP1 * P1 * P1d
@@ -46,59 +49,28 @@ for idx, dx in enumerate(dx_vec):
 
     opts = qt.Options(nsteps=500000)
     f_modes, f_energies = qt.floquet_modes(H, T, options=opts)
-    q_energies[idx, :] = f_energies
+    floquet_modes.append(f_modes)
+    floquet_energies.append(f_energies)
 
 # Plotting
-plt.figure(figsize=(5.5, 12))  # Adjust the figure size as needed
+plt.figure(figsize=(8, 6))  # Adjust the figure size as needed
 
-plt.rcParams['mathtext.fontset'] = 'stix'
 # Set the font family and size
 plt.rcParams['font.family'] = 'Times New Roman'
-plt.rcParams['font.size'] = 24
+plt.rcParams['font.size'] = 14
 
-plt.xlabel(r'$\delta_x$', fontsize=24)
-plt.ylabel('Quasienergies', fontsize=24)
+plt.xlabel(r'$\delta_x$')
+plt.ylabel(r'$E$')
 
-#for m in range(-3, 4):
-#    for k in range(0, hs_dim):
-#        plt.plot(dx_vec, (q_energies[:, k] / v) + (m*(v/w)), color='black', marker='.', linestyle='',
-#            markersize=2)
-
-#for m in range(-1, 2):
-#    for k in range(0, hs_dim):
-#        plt.plot(dx_vec, q_energies[:, k] + m*(v/w), color='black', marker='.', linestyle='',
-#           markersize=2)
-        
-# Define the frequency zones and their corresponding colors
-frequency_zones = {
-    (-1.5, -0.5): '#5ab4ac',  # Define the frequency zones and their colors here
-    (-0.5, 0.5): '#c7eae5',
-    (0.5, 1.5): '#5ab4ac'
-}
-
-# Setting plot limits
-#plt.ylim(-2.5, 2.5)  # setting x-axis limits from 0 to 6
-plt.xlim(0, 1.6) # setting y-axis limits from 0 to 12
-
-# Plotting
-for m in range(-1, 2):
-    for k in range(0, hs_dim):
-        plt.plot(dx_vec, q_energies[:, k] + m*(v/w), color='black', marker='.', linestyle='',
-            markersize=1)
-
-# Add background patches for each frequency zone
-for zone, color in frequency_zones.items():
-    plt.axhspan(zone[0] * v / w, zone[1] * v / w, facecolor=color, alpha=0.3)
-
-# Set y-ticks and labels
-y_ticks = np.arange(-1, 2) * v / w
-y_labels = ['$\\epsilon-\\hbar\\nu$', '$\epsilon$', '$\\epsilon+\\hbar\\nu$']  # You can modify these labels as needed
-
-plt.yticks(y_ticks, y_labels)
+for m in range(-3, 4):
+    for idx, dx in enumerate(dx_vec):
+        for k in range(0, hs_dim):
+            # Adjust energies for each m value
+            plt.plot(dx_vec, (floquet_energies[idx][:, k] / v) + (m*(v/w)), color='black', marker='.', linestyle='',
+                markersize=2)
 
 plt.tight_layout(pad=1.0)  # Adjust padding as needed
 plt.savefig('floquet_quasienergies_test.pdf', format='pdf')
 plt.show()
 
 print("--- %s seconds ---" % (time.time() - start_time))
- 
