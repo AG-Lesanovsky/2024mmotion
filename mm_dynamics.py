@@ -6,8 +6,8 @@ import qutip as qt
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-#from mm_operators import*
-from mm_operators1d import*
+from mm_operators import*
+#from mm_operators1d import*
 from mm_parameters import*
 
 start_time = time.time()
@@ -22,7 +22,7 @@ tspan = np.linspace(0, tmax, npts)
 phi0 = qt.tensor(qt.basis(2, 0), qt.basis(Nx, 0))
 
 #result = qt.sesolve(H, phi0, tspan, [ax.dag()*ax, ay.dag()*ay, az.dag()*az.dag()])
-result = qt.sesolve(H, phi0, tspan, [ax.dag()*ax, S1*S1d, P1*P1d])
+result = qt.sesolve(H, phi0, tspan, [ax.dag()*ax, sx, sy])
 
 #expected values for each operators
 ax2_exp = result.expect[0]
