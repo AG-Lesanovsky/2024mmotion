@@ -49,10 +49,16 @@ plt.ylabel(r'$\left| \langle nS|u_{nm} \rangle \right|^2$', fontsize=24)
 #plt.plot(f_energies, ns_trans, color='black', marker='.', linestyle='',
 #            markersize=4)
 
-plt.vlines(f_energies, 0, ns_trans, color='#0571b0', linestyle='solid', linewidth = 1.5)
+plt.vlines(f_energies, 0, ns_trans, color='#018571', linestyle='solid', linewidth = 1.5)
 
 plt.tight_layout()
 
-plt.savefig(f'nS_transition_dx={dx}.pdf', format='pdf')
+#saving plots
+nS_transition_pdf = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\figures\\nS_transition_dx={dx}.pdf'
+plt.savefig(nS_transition_pdf, format='pdf')
+
+#saving data
+nS_transition_txt = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\data\\nS_transition_dx={dx}'
+np.savetxt(nS_transition_txt, np.c_[f_energies, ns_trans])
 
 plt.show()
