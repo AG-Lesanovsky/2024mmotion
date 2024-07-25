@@ -8,13 +8,16 @@ from matplotlib.colors import LogNorm
 # This code read data from files with energies and transition rates from the |nS> state for each quasienergy operator size, given by the number of blocks.
 
 # Read data from each file and store in lists or arrays
-num_blocks = [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51]
+num_blocks = range(1, 100)
 
 data = []
 
+d = 0
+v = 2.5
+
 # Load data from files
 for k in num_blocks:
-    file_path = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\data\\nS_transition_dx=1000_N=50_Nb={k}'
+    file_path = f'C:\\Users\\wsant\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\data_new\\nS_transition_d={d}_v={v}_nb={k}'
     with open(file_path, 'r') as file:
         lines = file.readlines()
         E_values = []
@@ -23,7 +26,7 @@ for k in num_blocks:
             x, y = map(float, line.split())
             E_values.append(x)
             nS_values.append(y)
-        data.append((E_values - np.rint(0.5*(k - 1))*xi, [k] * len(E_values), nS_values))
+        data.append((E_values, [k] * len(E_values), nS_values))
 
 # Create structured data for 3D plotting
 E_values_all = []
@@ -58,15 +61,15 @@ ax1.zaxis.pane.set_edgecolor('black')
 ax1.grid(False)
 
 # Set limits for the x-axis (energy values)
-ax1.set_xlim(-50400, -49600)
+ax1.set_xlim(-25200, -24800)
 
 # Set labels and title
 ax1.set_xlabel(r'$\epsilon_{\alpha m}(\omega)$', fontsize=24)
 ax1.set_ylabel(r'$N_\mathrm{blocks}$', fontsize=24)
 ax1.set_zlabel(r'$\left|\langle nS|u_{\alpha m} \rangle\right|^2$', fontsize=24)
 
-fig1_save = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\figures\\quasi_conv_dx=1000.png'
-plt.savefig(fig1_save, format='png')
+#fig1_save = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\figures\\quasi_conv_dx=1000.png'
+#plt.savefig(fig1_save, format='png')
 
 # Sort data based on the z-coordinate (nS_values_all) in descending order
 sorted_indices = np.argsort(nS_values_all)[::1]
@@ -86,7 +89,7 @@ ax2 = fig2.add_subplot(111)
 ax2.scatter(E_values_sorted, nb_values_sorted, c=nS_values_clipped, norm=LogNorm(), cmap='Greys')
 
 # Set limits for the x-axis (energy values) in the projection plot
-ax2.set_xlim(-51000, -49000)
+ax2.set_xlim(-25200, -24800)
 
 # Set labels and title for the projection plot
 ax2.set_xlabel(r'$\epsilon_{\alpha m}(\omega)$', fontsize=24)
