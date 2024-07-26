@@ -103,7 +103,7 @@ for g in z_list:
         print("--- %s seconds ---" % (time.time() - start_time))
 
         # Saving data
-        nS_transition_txt = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\data\\sm50nS_transition_d={d}_eta={eta}'
+        nS_transition_txt = f'C:\\Users\\Wilson\\OneDrive\\Dokumente\\2024mmotion\\1d_model\\data\\smnS_transition_d={d}_eta={eta}'
         np.savetxt(nS_transition_txt, np.c_[eigvals, ns_trans])
 
 
